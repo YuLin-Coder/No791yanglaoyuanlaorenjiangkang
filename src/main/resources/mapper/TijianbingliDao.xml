@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.TijianbingliDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.laoren_types as laorenTypes
+        ,a.tijianbingli_name as tijianbingliName
+        ,a.tijianbingli_file as tijianbingliFile
+        ,a.tijianbingli_time as tijianbingliTime
+        ,a.tijianbingli_content as tijianbingliContent
+        ,a.create_time as createTime
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.TijianbingliView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Tijianbingli  a
+        <where>
+            <if test=" params.laorenTypes != '' and params.laorenTypes != null">
+                and a.laoren_types = #{params.laorenTypes}
+            </if>
+            <if test=" params.tijianbingliName != '' and params.tijianbingliName != null and params.tijianbingliName != 'null' ">
+                and a.tijianbingli_name like CONCAT('%',#{params.tijianbingliName},'%')
+            </if>
+            <if test=" params.tijianbingliTimeStart != '' and params.tijianbingliTimeStart != null and params.tijianbingliTimeStart != 'null' ">
+                and a.tijianbingli_time &gt;= {params.tijianbingliTimeStart}
+            </if>
+            <if test=" params.tijianbingliTimeEnd != '' and params.tijianbingliTimeEnd != null and params.tijianbingliTimeEnd != 'null' ">
+                and a.tijianbingli_time &lt;= {params.tijianbingliTimeEnd}
+            </if>
+            <if test=" params.tijianbingliContent != '' and params.tijianbingliContent != null and params.tijianbingliContent != 'null' ">
+                and a.tijianbingli_content like CONCAT('%',#{params.tijianbingliContent},'%')
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>

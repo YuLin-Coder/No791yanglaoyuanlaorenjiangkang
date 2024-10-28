@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.LaorenDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.laoren_name as laorenName
+        ,a.sex_types as sexTypes
+        ,a.laoren_age as laorenAge
+        ,a.laoren_phone as laorenPhone
+        ,a.laoren_photo as laorenPhoto
+        ,a.laoren_id_number as laorenIdNumber
+        ,a.laoren_content as laorenContent
+        ,a.laoren_time as laorenTime
+        ,a.create_time as createTime
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.LaorenView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Laoren  a
+        <where>
+            <if test=" params.laorenId != '' and params.laorenId != null">
+                and a.id = #{params.laorenId}
+            </if>
+            <if test=" params.laorenName != '' and params.laorenName != null and params.laorenName != 'null' ">
+                and a.laoren_name like CONCAT('%',#{params.laorenName},'%')
+            </if>
+            <if test=" params.sexTypes != '' and params.sexTypes != null and params.sexTypes != 'null' ">
+                and a.sex_types = #{params.sexTypes}
+            </if>
+            <if test=" params.laorenAge != '' and params.laorenAge != null and params.laorenAge != 'null' ">
+                and a.laoren_age = #{params.laorenAge}
+            </if>
+            <if test=" params.laorenPhone != '' and params.laorenPhone != null and params.laorenPhone != 'null' ">
+                and a.laoren_phone like CONCAT('%',#{params.laorenPhone},'%')
+            </if>
+            <if test=" params.laorenIdNumber != '' and params.laorenIdNumber != null and params.laorenIdNumber != 'null' ">
+                and a.laoren_id_number like CONCAT('%',#{params.laorenIdNumber},'%')
+            </if>
+            <if test=" params.laorenContent != '' and params.laorenContent != null and params.laorenContent != 'null' ">
+                and a.laoren_content like CONCAT('%',#{params.laorenContent},'%')
+            </if>
+            <if test=" params.laorenTimeStart != '' and params.laorenTimeStart != null and params.laorenTimeStart != 'null' ">
+                and a.laoren_time &gt;= {params.laorenTimeStart}
+            </if>
+            <if test=" params.laorenTimeEnd != '' and params.laorenTimeEnd != null and params.laorenTimeEnd != 'null' ">
+                and a.laoren_time &lt;= {params.laorenTimeEnd}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.ShentizhibiaoDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.laoren_types as laorenTypes
+        ,a.shentizhibiao_tiwen as shentizhibiaoTiwen
+        ,a.shentizhibiao_xieya as shentizhibiaoXieya
+        ,a.shentizhibiao_xietang as shentizhibiaoXietang
+        ,a.shentizhibiao_xinlu as shentizhibiaoXinlu
+        ,a.shentizhibiao_time as shentizhibiaoTime
+        ,a.create_time as createTime
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.ShentizhibiaoView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Shentizhibiao  a
+        <where>
+            <if test=" params.laorenTypes != '' and params.laorenTypes != null">
+                and a.laoren_types = #{params.laorenTypes}
+            </if>
+            <if test=" params.shentizhibiaoTiwen != '' and params.shentizhibiaoTiwen != null and params.shentizhibiaoTiwen != 'null' ">
+                and a.shentizhibiao_tiwen like CONCAT('%',#{params.shentizhibiaoTiwen},'%')
+            </if>
+            <if test=" params.shentizhibiaoXieya != '' and params.shentizhibiaoXieya != null and params.shentizhibiaoXieya != 'null' ">
+                and a.shentizhibiao_xieya like CONCAT('%',#{params.shentizhibiaoXieya},'%')
+            </if>
+            <if test=" params.shentizhibiaoXietang != '' and params.shentizhibiaoXietang != null and params.shentizhibiaoXietang != 'null' ">
+                and a.shentizhibiao_xietang like CONCAT('%',#{params.shentizhibiaoXietang},'%')
+            </if>
+            <if test=" params.shentizhibiaoXinlu != '' and params.shentizhibiaoXinlu != null and params.shentizhibiaoXinlu != 'null' ">
+                and a.shentizhibiao_xinlu like CONCAT('%',#{params.shentizhibiaoXinlu},'%')
+            </if>
+            <if test=" params.shentizhibiaoTimeStart != '' and params.shentizhibiaoTimeStart != null and params.shentizhibiaoTimeStart != 'null' ">
+                and a.shentizhibiao_time &gt;= {params.shentizhibiaoTimeStart}
+            </if>
+            <if test=" params.shentizhibiaoTimeEnd != '' and params.shentizhibiaoTimeEnd != null and params.shentizhibiaoTimeEnd != 'null' ">
+                and a.shentizhibiao_time &lt;= {params.shentizhibiaoTimeEnd}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.LiuyanxinxiDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.note as note
+        ,a.yhnote as yhnote
+        ,a.note_time as noteTime
+        ,a.reply as reply
+        ,a.glreply as glreply
+        ,a.reply_time as replyTime
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.LiuyanxinxiView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Liuyanxinxi  a
+        <where>
+            <if test=" params.note != '' and params.note != null and params.note != 'null' ">
+                and a.note like CONCAT('%',#{params.note},'%')
+            </if>
+            <if test=" params.yhnote != '' and params.yhnote != null and params.yhnote != 'null' ">
+                and a.yhnote like CONCAT('%',#{params.yhnote},'%')
+            </if>
+            <if test=" params.noteTimeStart != '' and params.noteTimeStart != null and params.noteTimeStart != 'null' ">
+                and a.note_time &gt;= {params.noteTimeStart}
+            </if>
+            <if test=" params.noteTimeEnd != '' and params.noteTimeEnd != null and params.noteTimeEnd != 'null' ">
+                and a.note_time &lt;= {params.noteTimeEnd}
+            </if>
+            <if test=" params.reply != '' and params.reply != null and params.reply != 'null' ">
+                and a.reply like CONCAT('%',#{params.reply},'%')
+            </if>
+            <if test=" params.glreply != '' and params.glreply != null and params.glreply != 'null' ">
+                and a.glreply like CONCAT('%',#{params.glreply},'%')
+            </if>
+            <if test=" params.replyTimeStart != '' and params.replyTimeStart != null and params.replyTimeStart != 'null' ">
+                and a.reply_time &gt;= {params.replyTimeStart}
+            </if>
+            <if test=" params.replyTimeEnd != '' and params.replyTimeEnd != null and params.replyTimeEnd != 'null' ">
+                and a.reply_time &lt;= {params.replyTimeEnd}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>

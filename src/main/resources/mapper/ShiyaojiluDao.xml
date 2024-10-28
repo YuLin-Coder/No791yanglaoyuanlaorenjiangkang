@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.ShiyaojiluDao">
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.laoren_types as laorenTypes
+        ,a.shiyaojilu_name as shiyaojiluName
+        ,a.shiyaojilu_types as shiyaojiluTypes
+        ,a.shiyaojilu_content as shiyaojiluContent
+        ,a.shiyaojilu_time as shiyaojiluTime
+        ,a.create_time as createTime
+    </sql>
+
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.ShiyaojiluView" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM Shiyaojilu  a
+        <where>
+            <if test=" params.laorenTypes != '' and params.laorenTypes != null">
+                and a.laoren_types = #{params.laorenTypes}
+            </if>
+            <if test=" params.shiyaojiluName != '' and params.shiyaojiluName != null and params.shiyaojiluName != 'null' ">
+                and a.shiyaojilu_name like CONCAT('%',#{params.shiyaojiluName},'%')
+            </if>
+            <if test=" params.shiyaojiluTypes != '' and params.shiyaojiluTypes != null and params.shiyaojiluTypes != 'null' ">
+                and a.shiyaojilu_types = #{params.shiyaojiluTypes}
+            </if>
+            <if test=" params.shiyaojiluContent != '' and params.shiyaojiluContent != null and params.shiyaojiluContent != 'null' ">
+                and a.shiyaojilu_content like CONCAT('%',#{params.shiyaojiluContent},'%')
+            </if>
+            <if test=" params.shiyaojiluTimeStart != '' and params.shiyaojiluTimeStart != null and params.shiyaojiluTimeStart != 'null' ">
+                and a.shiyaojilu_time &gt;= {params.shiyaojiluTimeStart}
+            </if>
+            <if test=" params.shiyaojiluTimeEnd != '' and params.shiyaojiluTimeEnd != null and params.shiyaojiluTimeEnd != 'null' ">
+                and a.shiyaojilu_time &lt;= {params.shiyaojiluTimeEnd}
+            </if>
+        </where>
+        order by a.id desc
+    </select>
+
+</mapper>
